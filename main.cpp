@@ -340,6 +340,7 @@ int main(int argc, char** argv)
     initTextures();
     skyTexture = loadCubemap(faces);
     shaderID.makeShader("vertexShaderSource.glsl", "fragmentShaderSource.glsl");
+
     glutKeyboardFunc(KeyBoard);
     glutKeyboardUpFunc(KeyBoardUp);
     glutSpecialFunc(SpecialKeyBoard);
@@ -406,6 +407,7 @@ GLvoid drawScene()
             shaderID.setVec3("viewPos", player.x, 1, player.z);
         }
     }
+
     //¹Ù´Ú
     glBindTexture(GL_TEXTURE_2D, Floor_Load.texture);
     glm::mat4 floorTransform = glm::mat4(1.0f);
@@ -492,15 +494,20 @@ GLvoid drawScene()
         }
     }
     //¸ó½ºÅÍ
+
     glBindTexture(GL_TEXTURE_2D, Sphere_Load.texture);
+
 
     glm::mat4 MonsterTransform = glm::mat4(1.0f);
     glm::mat4 mpTransform = glm::mat4(1.0f);
     glm::mat4 pmTransform = glm::mat4(1.0f);
     for (int i = 0; i < 20; i++)
     {
+
+
         MonsterTransform = glm::mat4(1.0f);
         MonsterTransform = glm::translate(MonsterTransform, glm::vec3(monster[i].x, 0.05f, monster[i].z));
+        MonsterTransform = glm::rotate(MonsterTransform, glm::radians(monster[i].turnMonster + 90), glm::vec3(0, 1.f, 0));
         MonsterTransform = glm::scale(MonsterTransform, glm::vec3(0.05f, 0.05f, 0.05f));
         shaderID.setMat4("modelTransform", MonsterTransform);
         glBindVertexArray(VAO_Hero);

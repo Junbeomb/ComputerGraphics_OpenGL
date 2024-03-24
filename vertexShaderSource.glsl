@@ -17,7 +17,7 @@ uniform mat4 viewTransform;
 
 void main(void) 
 {
-	gl_Position =  projectionTransform *viewTransform * modelTransform*vec4 (vPos, 1.0);
+	gl_Position = projectionTransform * viewTransform * modelTransform * vec4(vPos, 1.0);
 	FragPos = vec3(modelTransform * vec4(vPos, 1.0));
 	Normal = mat3(transpose(inverse(modelTransform))) * vNormal;
 	TexCord = vTexCord;

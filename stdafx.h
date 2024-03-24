@@ -70,6 +70,10 @@ struct MonsterBullet
 
 struct Monster {
     float x{}, z{};
+
+    float LookX{}, LookZ{};
+    float turnMonster;
+
     int hp{3};
     int type{};
     int numbering{};

@@ -166,6 +166,11 @@ public:
                     if (monster[i].z > player.z)monster[i].z -= 0.02f;
                     if (monster[i].z < player.z)monster[i].z += 0.02f;
 
+                    monster[i].LookX = monster[i].x - player.x;
+                    monster[i].LookZ = monster[i].z - player.z;
+                    float inner = atan2(monster[i].LookX, monster[i].LookZ);
+                    monster[i].turnMonster = inner * 180 / M_PI;
+
                     //플레이어와 충돌
                     if (player.status == 0) {
                         //일반 몬스터
