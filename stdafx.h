@@ -2,6 +2,26 @@
 #define _USE_MATH_DEFINES
 #define _CRT_SECURE_NO_WARNINGS
 #define STB_IMAGE_IMPLEMENTATION
+
+#define PLAYTIME 10
+#define ANIMATION 1
+#define BULLET 2
+#define DASH_SPEED 0.2f
+#define MAP_SIZE 30.f
+#define MONSTER_GEN 3
+#define BOSS_GEN 20
+#define BULLET_MAX 20
+
+#define BOSS_TELEPORT 0
+#define BOSS_RAZOR 1
+#define BOSS_DROP 2
+#define BOSS_DASH 3
+
+#define BOSS_STATUS_NOTAPPEAR 0
+#define BOSS_STATUS_APPEAR 1
+#define BOSS_STATUS_SKILL 2
+#define BOSS_STATUS_DEATH 3
+
 #include "stb_image.h"
 #include <iostream>
 #include <vector>
@@ -118,3 +138,37 @@ struct Item
     bool shouldDraw = false;
     int type{};
 };
+
+int playTimeTimer{ 0 };
+int animationTimer{ 0 };
+
+bool bossToggle = false;
+bool bossObsToggle = false;
+float turnBoss = -90.0f;
+Boss boss;
+BossObstacle bossObs[200];
+Player player;
+Bullet bullet[BULLET_MAX];
+Monster monster[20];
+Item item[20];
+
+int bossCameraAnimationTime = 0;
+float cameraX = 0.0;
+float cameraZ = 0.0;
+
+bool topViewToggle = false;
+float topViewCameraX = 0.0f;
+float topViewCameraZ = 0.0f;
+
+int countMonCatch = 0;
+float coinRotate = 0.f;
+
+bool zFlag = false;
+int zTimer = 0;
+
+int skillXCoolTime = 0;
+bool skillXToggle = false;
+int skillCCoolTime = 0;
+bool skillCToggle = false;
+
+int countSkillEight = 0;
