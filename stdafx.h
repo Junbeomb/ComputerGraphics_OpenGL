@@ -23,7 +23,9 @@
 struct Player {
     float x{}, z{};
     float direction{};
+    float directionY{};
     int startX{}, currentX{};
+    int startY{}, currentY{};
     bool w = false, a = false, s = false, d = false;
     int atk{}, hp = 10, speed{};
     int status{};

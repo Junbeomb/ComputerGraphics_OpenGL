@@ -438,7 +438,7 @@ GLvoid drawScene()
         }
         else { //카메라 일반 상태
             vTransform = glm::mat4(1.0f);
-            cameraPos = glm::vec3(player.x + sin(player.direction)*5, 2.5f, player.z + cos(player.direction) * 5);
+            cameraPos = glm::vec3(player.x + sin(player.direction)*5, 2.5f + player.directionY, player.z + cos(player.direction) * 5);
             cameraDirection = glm::vec3(player.x, 0.8f, player.z);
             cameraUp = glm::vec3(0.0f, 1.0f, 0.0f);
             vTransform = glm::lookAt(cameraPos, cameraDirection, cameraUp);
@@ -775,8 +775,16 @@ GLvoid Motion(int x, int y) {
     player.startX = player.currentX;
     player.currentX = x;
 
+    player.startY = player.currentY;
+    player.currentY = y;
+
+    //마우스 x,z축
     if (player.startX < player.currentX)player.direction -= 0.05f;
     else if (player.startX > player.currentX)player.direction += 0.05f;
+
+    //마우스 y 축
+    if (player.startY < player.currentY && player.directionY >= -2.f)player.directionY -= 0.05f;
+    else if (player.startY > player.currentY)player.directionY += 0.05f;
 }
 
 GLvoid SpecialKeyBoard(int key, int x, int y)
