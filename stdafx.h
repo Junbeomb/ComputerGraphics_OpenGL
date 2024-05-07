@@ -42,10 +42,14 @@
 //플레이어 변수
 struct Player {
     float x{}, z{};
+
+    //마우스
     float direction{};
     float directionY{};
     int startX{}, currentX{};
     int startY{}, currentY{};
+    //
+
     bool w = false, a = false, s = false, d = false;
     int atk{}, hp = 10, speed{};
     int status{};

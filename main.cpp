@@ -66,6 +66,7 @@ std::vector<std::string> faces
 };
 GLvoid SpecialKeyBoard(int key, int x, int y);
 
+//헤더파일 클래스
 PlayTime pt;
 Animation ani;
 TimerBullet bul;
@@ -293,9 +294,11 @@ void InitBuffer() {
             -30.0f, -30.0f,  30.0f,
              30.0f, -30.0f,  30.0f
     };
+
     glGenVertexArrays(1, &VAO_skybox);
-    glGenBuffers(1, &VBO_pos_skybox);
     glBindVertexArray(VAO_skybox);
+
+    glGenBuffers(1, &VBO_pos_skybox);
     glBindBuffer(GL_ARRAY_BUFFER, VBO_pos_skybox);
     glBufferData(GL_ARRAY_BUFFER, sizeof(SkyboxVertices), &SkyboxVertices, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
@@ -317,14 +320,16 @@ int main(int argc, char** argv)
     {
         monster[i].shouldDraw = false;
     }
+
     player.atk = 1;
     player.speed = 1;
+
     srand(time(NULL));
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
-    glutInitWindowPosition(0, 0);
-    glutInitWindowSize(800, 800);
-    glutCreateWindow("Example1");
+    glutInitWindowPosition(200, 50);
+    glutInitWindowSize(1200, 800);
+    glutCreateWindow("TangTang");
 
     glewExperimental = GL_TRUE;
     if (glewInit() != GLEW_OK)
@@ -335,9 +340,10 @@ int main(int argc, char** argv)
     else
         std::cout << "GLEW Initialized\n";
 
-    skyShaderID.makeShader("skyBoxFragmentVertex.glsl", "skyBoxFragment.glsl");
     InitBuffer();
     initTextures();
+
+    skyShaderID.makeShader("skyBoxFragmentVertex.glsl", "skyBoxFragment.glsl");
     skyTexture = loadCubemap(faces);
     shaderID.makeShader("vertexShaderSource.glsl", "fragmentShaderSource.glsl");
 
@@ -361,12 +367,11 @@ GLvoid drawScene()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
+   //glEnable(GL_CULL_FACE);
 
     //조명
     shaderID.setVec3("lightPos", 0.f, 3.f, 0.f);
     shaderID.setVec3("lightColor", 1.f, 1.f, 1.f);
-
 
     //투영 변환
     glm::mat4 pTransform = glm::mat4(1.0f);
@@ -456,7 +461,7 @@ GLvoid drawScene()
                 glBindTexture(GL_TEXTURE_2D, Sphere_Load.texture);
                 glm::mat4 PlayerBullet = glm::mat4(1.0f);
                 PlayerBullet = glm::translate(PlayerBullet, glm::vec3(bullet[i].currentX, bullet[i].currentY, bullet[i].currentZ));
-                PlayerBullet = glm::scale(PlayerBullet, glm::vec3(0.5f, 0.5f, 0.5f));
+                PlayerBullet = glm::scale(PlayerBullet, glm::vec3(0.7f, 0.7f, 0.7f));
                 shaderID.setMat4("modelTransform", PlayerBullet);
                 shaderID.setVec3("objectColor", 1.f, 1.f, 1.f);
                 glBindVertexArray(VAO_Sphere);
@@ -466,7 +471,7 @@ GLvoid drawScene()
                 glBindTexture(GL_TEXTURE_2D, Sphere_Load.texture);
                 glm::mat4 PlayerBullet = glm::mat4(1.0f);
                 PlayerBullet = glm::translate(PlayerBullet, glm::vec3(bullet[i].currentX, bullet[i].currentY, bullet[i].currentZ));
-                PlayerBullet = glm::scale(PlayerBullet, glm::vec3(0.05f, 0.05f, 0.05f));
+                PlayerBullet = glm::scale(PlayerBullet, glm::vec3(0.3f, 0.3f, 0.3f));
                 shaderID.setMat4("modelTransform", PlayerBullet);
                 shaderID.setVec3("objectColor", 1.f, 1.f, 1.f);
                 glBindVertexArray(VAO_Sphere);
@@ -515,7 +520,7 @@ GLvoid drawScene()
         {
         case 1:
             shaderID.setVec3("objectColor", 0.f, 1.f, 0.f);
-            if (monster[i].shouldDraw)glDrawArrays(GL_TRIANGLES, 0, Hero);
+            if (monster[i].shouldDraw)glDrawArrays(0x0004, 0, Hero);
             break;
         case 2:
             shaderID.setVec3("objectColor", 1.f, 1.f, 0.f);
@@ -549,7 +554,6 @@ GLvoid drawScene()
             }
             break;
         }
-
     }
 
     glBindTexture(GL_TEXTURE_2D, Boss_Load.texture);
@@ -582,6 +586,7 @@ GLvoid drawScene()
                 glDrawArrays(GL_TRIANGLES, 0, Cylinder);
             }
 
+            
             //drop 스킬
             if (boss.skillDrop.toggle == true) {
                 for (int i = 0; i < boss.skillDrop.number; i++) { //발판
@@ -667,7 +672,7 @@ GLvoid KeyBoard(unsigned char key, int x, int y)
         }
         break;
     case 'c':
-        if (bossToggle && !skillCToggle) {
+        if (!skillCToggle) {
             skillCToggle = true;
             for (int i = 0; i < BULLET_MAX; i++) {
                 if (bullet[i].shouldDraw == false) {

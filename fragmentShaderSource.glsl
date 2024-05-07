@@ -3,6 +3,7 @@
 in vec3 FragPos; //--- 노멀값을 계산하기 위해 객체의 위치값을 버텍스 세이더에서 받아온다.
 in vec3 Normal;
 in vec2 TexCord;
+
 out vec4 FragColor;
 
 uniform vec3 objectColor;
@@ -26,7 +27,7 @@ void main ()
 	float specularLight = pow(max(dot(viewDir, reflectDir), 0.0),256); //--- V와 R의 내적값으로 강도 조절: 음수 방지
 	vec3 specular = specularLight * lightColor; //--- 거울 반사 조명값: 거울반사값 * 조명색상값
 
-	vec3 result = (ambient+diffuse + specular) * objectColor; //--- 최종 조명 설정된 픽셀 색상: (주변+산란반사+거울반사조명)*객체 색상
+	vec3 result = (ambient + diffuse + specular) * objectColor; //--- 최종 조명 설정된 픽셀 색상: (주변+산란반사+거울반사조명)*객체 색상
 
 	FragColor = vec4 (result, 1.0f); // --- 픽셀 색을 출력
 	FragColor = texture(outTexture, TexCord)*FragColor;

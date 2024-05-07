@@ -19,27 +19,28 @@ public:
         fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
         try
         {
-            // open files
+            // 파일 열기
             vShaderFile.open(vertexPath);
             fShaderFile.open(fragmentPath);
             std::stringstream vShaderStream, fShaderStream;
-            // read file's buffer contents into streams
+            //파일의 내용 읽어 저장(스트림 버퍼 형태로)
             vShaderStream << vShaderFile.rdbuf();
             fShaderStream << fShaderFile.rdbuf();
-            // close file handlers
+            // 기존 파일 닫기
             vShaderFile.close();
             fShaderFile.close();
-            // convert stream into string
+            // 문자열 형식으로 변환 후 저장
             vertexCode = vShaderStream.str();
             fragmentCode = fShaderStream.str();
         }
-        catch (std::ifstream::failure& e)
+        catch (std::ifstream::failure& e) //읽기 실패
         {
             std::cout << "ERROR::SHADER::FILE_NOT_SUCCESFULLY_READ: " << e.what() << std::endl;
         }
+
         const char* vShaderCode = vertexCode.c_str();
         const char* fShaderCode = fragmentCode.c_str();
-        // 2. compile shaders
+
         unsigned int vertex, fragment;
         // vertex shader
         vertex = glCreateShader(GL_VERTEX_SHADER);
@@ -57,13 +58,12 @@ public:
         glAttachShader(ID, fragment);
         glLinkProgram(ID);
         checkCompileErrors(ID, "PROGRAM");
-        // delete the shaders as they're linked into our program now and no longer necessery
+        //셰이더 삭제
         glDeleteShader(vertex);
         glDeleteShader(fragment);
     }
 
-    // activate the shader
-    // ------------------------------------------------------------------------
+    // 셰이더 실행
     void use() const
     {
         glUseProgram(ID);
